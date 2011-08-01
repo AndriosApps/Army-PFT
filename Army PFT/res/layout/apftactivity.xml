@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:orientation="vertical" android:background="@drawable/background2">
+   <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout1">
+        <RadioGroup android:layout_height="wrap_content" android:id="@+id/radioGroup1" android:layout_width="wrap_content" android:layout_weight="1">
+            <RadioButton android:layout_width="wrap_content" android:text="Male" android:layout_height="wrap_content" android:checked="true" android:id="@+id/APFTActivityMaleRDO"></RadioButton>
+            <RadioButton android:layout_width="wrap_content" android:text="Female" android:layout_height="wrap_content" android:id="@+id/calculatorFemaleRDO"></RadioButton>
+        </RadioGroup>
+        <LinearLayout android:layout_height="fill_parent" android:layout_width="wrap_content" android:id="@+id/linearLayout2" android:orientation="vertical" android:layout_weight="1" android:gravity="center">
+            <Spinner android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/APFTActivityAgeSpinner"></Spinner>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout3" android:orientation="vertical" android:gravity="center">
+        <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout5" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:layout_width="260dip">
+            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout11">
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout14" android:layout_weight="1" android:layout_width="1px">
+                    <TextView android:id="@+id/APFTActivityPushupScoreLBL" android:text="TextView" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+                </LinearLayout>
+                <TextView android:layout_height="wrap_content" android:text="Pushups" android:id="@+id/textView6" android:layout_weight="1" android:layout_width="1px" android:gravity="center"></TextView>
+                <TextView android:layout_height="wrap_content" android:layout_weight="1" android:text="0" android:layout_width="1px" android:id="@+id/APFTActivityPushUpLBL"></TextView>
+            </LinearLayout>
+            <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout20" android:layout_height="wrap_content">
+                <Button android:layout_width="30dip" android:layout_weight="0" android:background="@drawable/minus" android:layout_height="30dip" android:id="@+id/APFTActivityPushupsDownBTN"></Button>
+                <SeekBar android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/APFTActivityPushupSeekBar"></SeekBar>
+                <Button android:layout_width="30dip" android:layout_weight="0" android:background="@drawable/plus" android:layout_height="30dip" android:id="@+id/APFTActivityPushupsUpBTN"></Button>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout6" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:layout_width="260dip">
+            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout8">
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout15" android:layout_weight="1" android:layout_width="1px">
+                    <TextView android:id="@+id/APFTActivitySitupScoreLBL" android:text="TextView" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+                </LinearLayout>
+                <TextView android:layout_height="wrap_content" android:text="Situps" android:id="@+id/textView7" android:layout_weight="1" android:layout_width="1px" android:gravity="center"></TextView>
+                <TextView android:layout_height="wrap_content" android:layout_weight="1" android:text="0" android:layout_width="1px" android:id="@+id/APFTActivitySitUpLBL"></TextView>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/linearLayout19" android:layout_height="fill_parent" android:layout_width="fill_parent">
+                <Button android:layout_width="30dip" android:layout_weight="0" android:background="@drawable/minus" android:layout_height="30dip" android:id="@+id/APFTActivitySitupsDownBTN"></Button>
+                <SeekBar android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/APFTActivitySitUpSeekBar"></SeekBar>
+                <Button android:layout_width="30dip" android:layout_weight="0" android:background="@drawable/plus" android:layout_height="30dip" android:id="@+id/APFTActivitySitupsUpBTN"></Button>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_height="wrap_content" android:layout_weight="0" android:gravity="center" android:orientation="vertical" android:id="@+id/LinearLayout02" android:layout_width="260dip">
+            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout7">
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout16" android:layout_weight="1" android:layout_width="1px">
+                    <TextView android:id="@+id/APFTActivityRunScoreLBL" android:text="TextView" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+                </LinearLayout>
+                <TextView android:layout_height="wrap_content" android:text="Run Time" android:id="@+id/TextView01" android:layout_weight="1" android:layout_width="1px" android:gravity="center"></TextView>
+                <TextView android:layout_height="wrap_content" android:text="00:00" android:layout_weight="1" android:layout_width="1px" android:id="@+id/APFTActivityRunLBL"></TextView>
+            </LinearLayout>
+            <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout17" android:layout_width="fill_parent">
+                <Button android:layout_height="30dip" android:background="@drawable/minus" android:layout_width="30dip" android:layout_weight="0" android:id="@+id/APFTActivitySecondsDownBTN"></Button>
+                <SeekBar android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/APFTActivityRunTimeSeekBar"></SeekBar>
+                <Button android:layout_height="30dip" android:background="@drawable/plus" android:layout_width="30dip" android:layout_weight="0" android:id="@+id/APFTActivitySecondsUpBTN"></Button>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center" android:orientation="horizontal" android:id="@+id/linearLayout9">
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout10" android:gravity="center" android:layout_weight="1">
+        <TextView android:layout_width="wrap_content" android:text="Enter required metrics" android:layout_height="wrap_content" android:textSize="22dip" android:id="@+id/APFTActivityScoreLBL"></TextView>
+    </LinearLayout>
+    <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout18" android:layout_height="wrap_content">
+    	<com.google.ads.AdView 
+		xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        ads:adUnitId="a14debe274d41b2"
+        ads:adSize="BANNER"
+        android:layout_weight="0" android:id="@+id/APFTActivityAdView"/>	
+    </LinearLayout>
+  
+</LinearLayout>
