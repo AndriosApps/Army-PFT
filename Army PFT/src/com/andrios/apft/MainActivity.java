@@ -39,10 +39,10 @@ public class MainActivity extends TabActivity {
         mTabHost.addTab(mTabHost.newTabSpec("APFT").setIndicator("",res.getDrawable(R.drawable.icon))
         		.setContent(intent));
         
-        //Setup for Workout Tab (Tab 1)
-        intent = new Intent().setClass(this, APFTActivity.class);
+        //Setup for BCA Tab (Tab 1)
+        intent = new Intent().setClass(this, BCAActivity.class);
         intent.putExtra("data", mData);
-        mTabHost.addTab(mTabHost.newTabSpec("CFT").setIndicator("",res.getDrawable(R.drawable.icon))
+        mTabHost.addTab(mTabHost.newTabSpec("BCA").setIndicator("",res.getDrawable(R.drawable.icon))
         		.setContent(intent));
         
         //Setup for Profile Tab (Tab 2)
