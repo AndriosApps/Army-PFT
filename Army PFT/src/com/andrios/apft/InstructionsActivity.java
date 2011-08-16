@@ -28,7 +28,7 @@ public class InstructionsActivity extends Activity {
 
         setConnections();
         setOnClickListeners();
-        setTracker();
+       // setTracker();
     }
     
 
@@ -53,7 +53,7 @@ public class InstructionsActivity extends Activity {
 
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setData(Uri.parse("market://details?id=com.andrios.marinepft"));
+				intent.setData(Uri.parse("market://details?id=com.andrios.apft"));
 				startActivity(intent);
 
 				
@@ -68,7 +68,7 @@ public class InstructionsActivity extends Activity {
 				            "Link",  // Action
 				            "6100.13", // Label
 				            0);       // Value
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://usmc.mil/news/publications/Documents/MCO%206100.13.pdf"));
+				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.apft-standards.com/files/fm21_20.pdf"));
 				startActivity(browserIntent);
 			}
 			
@@ -133,18 +133,18 @@ public class InstructionsActivity extends Activity {
 		tracker = GoogleAnalyticsTracker.getInstance();
 
 	    // Start the tracker in manual dispatch mode...
-	    tracker.start("UA-23366060-3", this);
+	    //tracker.start("UA-23366060-3", this);
 	}
 
 	
 	public void onResume(){
 		super.onResume();
-		tracker.trackPageView("Instructions");
+		//tracker.trackPageView("Instructions");
 	}
 	
 	public void onPause(){
 		super.onPause();
-		tracker.dispatch();
+		//tracker.dispatch();
 	}
 }
 
