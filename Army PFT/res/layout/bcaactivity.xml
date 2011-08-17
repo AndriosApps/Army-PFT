@@ -2,14 +2,18 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent" android:orientation="vertical" android:background="@drawable/background" android:id="@+id/topLayout">
+  android:layout_height="fill_parent" android:orientation="vertical" android:id="@+id/topLayout" android:background="@drawable/background">
     <LinearLayout android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_weight="0" android:layout_height="wrap_content">
-        <LinearLayout android:id="@+id/linearLayout7" android:layout_width="wrap_content" android:layout_height="fill_parent" android:orientation="vertical">
-            <RadioGroup android:id="@+id/RadioGroup01" android:orientation="horizontal" android:layout_width="150dip" android:layout_height="40dip">
-                <com.andrios.apft.SegmentedControlButton android:layout_weight="1" android:layout_height="fill_parent" android:text="Male" android:id="@+id/bcaActivityMaleSegment" android:layout_width="50dip" android:checked="true" android:textSize="12dip"></com.andrios.apft.SegmentedControlButton>
-                <com.andrios.apft.SegmentedControlButton android:layout_weight="1" android:layout_height="fill_parent" android:text="Female" android:id="@+id/cftActivityFemaleSegment" android:layout_width="50dip" android:checked="false" android:textSize="12dip"></com.andrios.apft.SegmentedControlButton>
-            </RadioGroup>
-            <Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/bcaActivityAgeSpinner"></Spinner>
+        <LinearLayout android:id="@+id/linearLayout7" android:layout_height="fill_parent" android:orientation="vertical" android:gravity="bottom" android:layout_width="125dip">
+            <LinearLayout android:id="@+id/linearLayout8" android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:gravity="center|bottom">
+                <RadioGroup android:id="@+id/RadioGroup01" android:layout_width="150dip" android:orientation="horizontal" android:layout_height="fill_parent">
+                    <com.andrios.apft.SegmentedControlButton android:text="Male" android:layout_width="50dip" android:id="@+id/bcaActivityMaleSegment" android:layout_height="fill_parent" android:checked="true" android:textSize="12dip" android:layout_weight="1"></com.andrios.apft.SegmentedControlButton>
+                    <com.andrios.apft.SegmentedControlButton android:text="Female" android:layout_width="50dip" android:id="@+id/cftActivityFemaleSegment" android:layout_height="fill_parent" android:checked="false" android:textSize="12dip" android:layout_weight="1"></com.andrios.apft.SegmentedControlButton>
+                </RadioGroup>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/linearLayout35" android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:gravity="center|bottom">
+                <Spinner android:id="@+id/bcaActivityAgeSpinner" android:layout_width="fill_parent" android:layout_height="fill_parent"></Spinner>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout android:id="@+id/linearLayout2" android:layout_width="wrap_content" android:orientation="vertical" android:layout_height="wrap_content">
             <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_height="fill_parent" android:layout_weight="1" android:id="@+id/LinearLayout09" android:layout_width="200dip">

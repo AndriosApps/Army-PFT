@@ -6,6 +6,7 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -60,7 +61,10 @@ public class APFTActivity extends Activity{
 	        getExtras();
 	        setConnections();
 	        setOnClickListeners();
+
+	        setTracker();
 	        
+	       
 	    
 	    }
 	private void getExtras() {
@@ -82,7 +86,7 @@ public class APFTActivity extends Activity{
 		array_spinner[7]="52-56";
 		ageSpinner = (Spinner) findViewById(R.id.APFTActivityAgeSpinner);
 		ArrayAdapter adapter = new ArrayAdapter(this,
-				android.R.layout.simple_spinner_item, array_spinner);
+				R.layout.my_spinner_item, array_spinner);
 		ageSpinner.setAdapter(adapter);
 		
 		maleRDO  = (RadioButton) findViewById(R.id.APFTActivityMaleRDO); 
@@ -115,6 +119,12 @@ public class APFTActivity extends Activity{
 		situpSeekBar.setMax(MAX_SITUPS - MIN_SITUPS);
 		runSeekBar.setMax(MAX_RUN - MIN_RUN);
 		runLBL.setText(formatTimer());
+		
+		 adView = (AdView)this.findViewById(R.id.APFTActivityAdView);
+	      
+		    request = new AdRequest();
+			request.setTesting(false);
+			adView.loadAd(request);
 		
 	}
 
@@ -238,6 +248,30 @@ public class APFTActivity extends Activity{
 			 
 		 });
 	 
+	 situpUpBTN.setOnClickListener(new OnClickListener(){
+
+			public void onClick(View v) {
+				if(situps < MAX_SITUPS){
+					situps += 1;
+				}
+				situpSeekBar.setProgress(situps - MIN_SITUPS);
+				
+			}
+			 
+		 });
+		 
+		 situpDownBTN.setOnClickListener(new OnClickListener(){
+
+				public void onClick(View v) {
+					if(situps > MIN_SITUPS){
+						situps -= 1;
+					}
+					situpSeekBar.setProgress(situps - MIN_SITUPS);
+					
+				}
+				 
+			 });
+	 
 	 /*
 	  * 2 Mile Run
 	  */
@@ -326,11 +360,15 @@ public class APFTActivity extends Activity{
 		}
 		
 		if(runchanged && situpchanged && pushupchanged){
-			int totalScore = (runScore + situpScore + pushupScore)/3;
+			int totalScore = (runScore + situpScore + pushupScore);
 			if(runScore < 60 || pushupScore < 60 || pushupScore < 60){
-				scoreLBL.setText("Events Failed: " + totalScore);
+				scoreLBL.setText("Event(s) Failed: " + totalScore);
+				scoreLBL.setBackgroundColor(Color.RED);
+				scoreLBL.getBackground().setAlpha(100);
 			}else{
-				scoreLBL.setText("Score: " + totalScore);
+				scoreLBL.setText("Total Points: " + totalScore);
+				scoreLBL.setBackgroundColor(Color.GREEN);
+				scoreLBL.getBackground().setAlpha(100);
 			}
 			
 		}
@@ -641,5 +679,24 @@ public class APFTActivity extends Activity{
 		
 		
 		
+	}
+	
+	private void setTracker() {
+		tracker = GoogleAnalyticsTracker.getInstance();
+
+	    // Start the tracker in manual dispatch mode...
+	    tracker.start("UA-23366060-6", this);
+	    
+		
+	}
+	
+	public void onResume(){
+		super.onResume();
+		tracker.trackPageView("PFT");
+	}
+	
+	public void onPause(){
+		super.onPause();
+		tracker.dispatch();
 	}
 }

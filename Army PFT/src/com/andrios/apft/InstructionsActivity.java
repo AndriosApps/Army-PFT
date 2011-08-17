@@ -15,7 +15,7 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class InstructionsActivity extends Activity {
 
-	TextView opnavLBL, navadmin1LBL, navadmin2LBL, navadmin3LBL, npcLBL;
+	TextView opnavLBL, AR6009LBL, navadmin2LBL, navadmin3LBL, npcLBL;
 	AdView adView;
 	AdRequest request;
 	GoogleAnalyticsTracker tracker;
@@ -28,14 +28,14 @@ public class InstructionsActivity extends Activity {
 
         setConnections();
         setOnClickListeners();
-       // setTracker();
+       setTracker();
     }
     
 
 	private void setConnections() {
 		rateBTN = (Button) findViewById(R.id.instructionActivityRateBTN);
 		opnavLBL = (TextView) findViewById(R.id.instructionActivityOPNAVLBL);
-		navadmin1LBL = (TextView) findViewById(R.id.instructionActivityNAVADMIN1LBL);
+		AR6009LBL = (TextView) findViewById(R.id.instructionActivityAR6009LBL);
 		navadmin2LBL = (TextView) findViewById(R.id.instructionActivityNAVADMIN2LBL);
 		navadmin3LBL = (TextView) findViewById(R.id.instructionActivityNAVADMIN3LBL);
 		npcLBL = (TextView) findViewById(R.id.instructionActivityNPCLBL);
@@ -60,6 +60,7 @@ public class InstructionsActivity extends Activity {
 			}
 			
 		});
+		
 		opnavLBL.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
@@ -73,16 +74,17 @@ public class InstructionsActivity extends Activity {
 			}
 			
 		});
-		navadmin1LBL.setOnClickListener(new OnClickListener(){
+		
+		AR6009LBL.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
 				 tracker.trackEvent(
 				            "Clicks",  // Category
 				            "Link",  // Action
-				            "NAVADMIN 180-05", // Label
+				            "AR 600-9", // Label
 				            0);       // Value
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.navy-prt.com/navadmin180-05.html"));
-				//startActivity(browserIntent);
+				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.apd.army.mil/pdffiles/r600_9.pdf"));
+				startActivity(browserIntent);
 			}
 			
 		});
@@ -133,18 +135,19 @@ public class InstructionsActivity extends Activity {
 		tracker = GoogleAnalyticsTracker.getInstance();
 
 	    // Start the tracker in manual dispatch mode...
-	    //tracker.start("UA-23366060-3", this);
+	    tracker.start("UA-23366060-6", this);
+	    
+		
 	}
-
 	
 	public void onResume(){
 		super.onResume();
-		//tracker.trackPageView("Instructions");
+		tracker.trackPageView("BCA");
 	}
 	
 	public void onPause(){
 		super.onPause();
-		//tracker.dispatch();
+		tracker.dispatch();
 	}
 }
 

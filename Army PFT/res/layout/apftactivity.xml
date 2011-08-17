@@ -2,7 +2,7 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent" android:orientation="vertical" android:background="@drawable/background2">
+  android:layout_height="fill_parent" android:orientation="vertical" android:background="@drawable/background">
    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout1">
         <RadioGroup android:layout_height="wrap_content" android:id="@+id/radioGroup1" android:layout_width="wrap_content" android:layout_weight="1">
             <RadioButton android:layout_width="wrap_content" android:text="Male" android:layout_height="wrap_content" android:checked="true" android:id="@+id/APFTActivityMaleRDO"></RadioButton>
@@ -15,7 +15,7 @@
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout3" android:orientation="vertical" android:gravity="center">
         <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout5" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:layout_width="260dip">
             <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout11">
-                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout14" android:layout_weight="1" android:layout_width="1px">
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout14" android:layout_weight="1" android:layout_width="1px" android:gravity="right">
                     <TextView android:id="@+id/APFTActivityPushupScoreLBL" android:text="" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
                 </LinearLayout>
                 <TextView android:layout_height="wrap_content" android:text="Pushups" android:id="@+id/textView6" android:layout_weight="1" android:layout_width="1px" android:gravity="center"></TextView>
@@ -29,7 +29,7 @@
         </LinearLayout>
         <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout6" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:layout_width="260dip">
             <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout8">
-                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout15" android:layout_weight="1" android:layout_width="1px">
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout15" android:layout_weight="1" android:layout_width="1px" android:gravity="right">
                     <TextView android:id="@+id/APFTActivitySitupScoreLBL" android:text="" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
                 </LinearLayout>
                 <TextView android:layout_height="wrap_content" android:text="Situps" android:id="@+id/textView7" android:layout_weight="1" android:layout_width="1px" android:gravity="center"></TextView>
@@ -43,7 +43,7 @@
         </LinearLayout>
         <LinearLayout android:layout_height="wrap_content" android:layout_weight="0" android:gravity="center" android:orientation="vertical" android:id="@+id/LinearLayout02" android:layout_width="260dip">
             <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout7">
-                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout16" android:layout_weight="1" android:layout_width="1px">
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout16" android:layout_weight="1" android:layout_width="1px" android:gravity="right">
                     <TextView android:text="" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/APFTActivityRunScoreLBL"></TextView>
                 </LinearLayout>
                 <TextView android:layout_height="wrap_content" android:text="Run Time" android:id="@+id/TextView01" android:layout_weight="1" android:layout_width="1px" android:gravity="center"></TextView>
@@ -59,14 +59,14 @@
         </LinearLayout>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout10" android:gravity="center" android:layout_weight="1">
-        <TextView android:layout_width="wrap_content" android:text="Enter required metrics" android:layout_height="wrap_content" android:textSize="22dip" android:id="@+id/APFTActivityScoreLBL"></TextView>
+        <TextView android:text="Enter required metrics" android:layout_height="wrap_content" android:textSize="22dip" android:id="@+id/APFTActivityScoreLBL" android:layout_width="260dip" android:gravity="center"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout18" android:layout_height="wrap_content">
     	<com.google.ads.AdView 
 		xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
 		android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        ads:adUnitId="a14debe274d41b2"
+        ads:adUnitId="a14e4aeef975e9f"
         ads:adSize="BANNER"
         android:layout_weight="0" android:id="@+id/APFTActivityAdView"/>	
     </LinearLayout>

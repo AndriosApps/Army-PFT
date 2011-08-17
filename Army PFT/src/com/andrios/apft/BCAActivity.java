@@ -82,8 +82,8 @@ public class BCAActivity extends Activity {
 			array_spinner[2]="28-39";
 			array_spinner[3]="40+";
 			ageSpinner = (Spinner) findViewById(R.id.bcaActivityAgeSpinner);
-			ArrayAdapter adapter = new ArrayAdapter(this,
-					android.R.layout.simple_spinner_item, array_spinner);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					R.layout.my_spinner_item, array_spinner);
 			ageSpinner.setAdapter(adapter);
 			
 			flipper = (ViewFlipper) findViewById(R.id.details); 
@@ -387,6 +387,12 @@ public class BCAActivity extends Activity {
 				HWchanged = true;
 				calcHeightWeight();
 				
+				if(maleRDO.isChecked()){
+					calculateMale();
+				}else{
+					calculateFemale();
+				}
+				
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -560,24 +566,7 @@ public class BCAActivity extends Activity {
 		
 		}
 
-		private void setTracker() {
-			tracker = GoogleAnalyticsTracker.getInstance();
 
-		    // Start the tracker in manual dispatch mode...
-		    tracker.start("UA-23366060-2", this);
-		    
-			
-		}
-		
-		public void onResume(){
-			super.onResume();
-			tracker.trackPageView("BCA");
-		}
-		
-		public void onPause(){
-			super.onPause();
-			tracker.dispatch();
-		}
 		
 		//returns string of type 5'9"
 		private String formatInches(){
@@ -669,6 +658,25 @@ public class BCAActivity extends Activity {
 			}
 			
 			
+		}
+		
+		private void setTracker() {
+			tracker = GoogleAnalyticsTracker.getInstance();
+
+		    // Start the tracker in manual dispatch mode...
+		    tracker.start("UA-23366060-6", this);
+		    
+			
+		}
+		
+		public void onResume(){
+			super.onResume();
+			tracker.trackPageView("BCA");
+		}
+		
+		public void onPause(){
+			super.onPause();
+			tracker.dispatch();
 		}
 	  
 }

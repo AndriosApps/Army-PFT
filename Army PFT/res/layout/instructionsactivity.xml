@@ -4,8 +4,7 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" 
   android:orientation="vertical" 
-  android:id="@+id/ll"
-  android:background="@drawable/background2">
+  android:background="@drawable/background" android:id="@+id/backgroundLinearLayout">
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent"  android:id="@+id/linearLayout1" android:gravity="center">
         <TextView android:layout_height="wrap_content" android:text="ARMY PHYSICAL FITNESS PROGRAM" android:id="@+id/tv" android:textSize="18dip" android:layout_width="wrap_content" android:gravity="center"></TextView>
     </LinearLayout>
@@ -14,12 +13,11 @@
         <TextView android:layout_height="wrap_content" android:text="Official Physical Fitness Training Guide" android:id="@+id/textView1" android:layout_width="wrap_content"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:gravity="center" android:id="@+id/ll2" android:orientation="vertical">
-        <TextView android:textColor="#FFFF00" android:text="" android:id="@+id/instructionActivityNAVADMIN1LBL" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-        <TextView android:text="" android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        <TextView android:textColor="#FFFF00" android:text="AR 600-9" android:id="@+id/instructionActivityAR6009LBL" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        <TextView android:id="@+id/textView3" android:layout_width="wrap_content" android:text="Army Weight Control Program" android:layout_height="wrap_content"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout4" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
         <TextView android:textColor="#FFFF00" android:layout_height="wrap_content" android:text="" android:layout_width="wrap_content" android:id="@+id/instructionActivityNAVADMIN2LBL"></TextView>
-        <TextView android:text="" android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
         <TextView android:layout_height="wrap_content" android:id="@+id/textView5" android:gravity="center" android:layout_width="wrap_content" 
         	android:text="If you find this app useful, please take a minute to rate it. Comments help us make this app better. If you rate below 4 stars please tell us why!">
         </TextView>
@@ -33,13 +31,13 @@
         <TextView android:textColor="#FFFF00" android:layout_height="wrap_content" android:text="" android:layout_width="wrap_content" android:id="@+id/instructionActivityNPCLBL"></TextView>
         <TextView android:text="" android:id="@+id/textView4" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
     </LinearLayout>
-    <LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_weight="0" android:id="@+id/linearLayout5" android:layout_height="wrap_content" android:gravity="center|bottom">
+    <LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:id="@+id/linearLayout5" android:layout_height="wrap_content" android:gravity="center|bottom" android:layout_weight="0">
     	<com.google.ads.AdView 
 		xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
 		android:id="@+id/instructionsAdView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        ads:adUnitId="a14deec86da5f51"
+        ads:adUnitId="a14e4aeef975e9f"
         ads:adSize="BANNER"
         android:layout_weight="0" />
     </LinearLayout>
