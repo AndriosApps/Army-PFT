@@ -1,5 +1,8 @@
 package com.andrios.apft;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
 import android.os.Bundle;
 
 import android.app.TabActivity;
@@ -23,7 +26,19 @@ public class MainActivity extends TabActivity {
     }
 
 	private void readData() {
-		mData = new AndriosData();
+		try {
+			FileInputStream fis = openFileInput("data");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+
+			mData = (AndriosData) ois.readObject();
+			ois.close();
+			fis.close();
+			
+		} catch (Exception e) {
+			mData = new AndriosData();
+			
+			
+		}
 		
 	}
 
@@ -59,5 +74,11 @@ public class MainActivity extends TabActivity {
 
         //Set Tab host to Home Tab
         mTabHost.setCurrentTab(0);
+	}
+	
+	public void onDestroy(){
+		super.onDestroy();
+		mData.write(this);
+		
 	}
 }

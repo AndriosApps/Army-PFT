@@ -4,18 +4,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Observable;
 
 import android.content.Context;
 import android.widget.Toast;
 
 
-public class AndriosData implements Serializable, Cloneable {
+public class AndriosData extends Observable implements Serializable, Cloneable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6149357292077176082L;
-
+	boolean isMale;
+	int age, age2;
+	int runtime;
 	
 	int[] minWeight = {91, 94, 97, 100, 104, 107, 110, 114, 117, 121, 125, 128, 132, 136, 140, 144, 148, 152, 156, 160, 164, 168, 173};
 	//Male
@@ -221,18 +224,46 @@ public class AndriosData implements Serializable, Cloneable {
 	int[] runFemale65 = {};
 	*/
 	
+	/*
+	 * Alternate Cardio
+	 */
+	
+	int[] swimMale = {1200, 1230, 1260, 1290, 1320, 1350, 1380, 1410, 1440};
+	int[] swimFemale = {1260, 1290, 1320, 1350, 1380, 1410, 1440, 1470, 1500};
+	
+	int[] bikeMale = {1440, 1470, 1500, 1530, 1560, 1590, 1620, 1650, 1680};
+	int[] bikeFemale = {1500, 1530, 1560, 1590, 1620, 1650, 1680, 1710, 1740};
+	
+	int[] walkMale = {2040, 2070, 3000, 3030, 3060, 3090, 3120, 3150, 3180};
+	int[] walkFemale = {2220, 2250, 2280, 2310, 2340, 2370, 2400, 2430, 2460};
+	
 	
 	
 	public AndriosData(){
-		
-		
+		isMale = true;
+		age = 17;
+		age2 = 17;
 	}
 	
-
 	/**
 	 * Getter Methods
 	 */
 	
+	public boolean getGender(){
+		return isMale;
+	}
+	
+	public int getAge(){
+		return age;
+	}
+	
+	public int getAge2(){
+		return age2;
+	}
+	
+	public int getRunTime(){
+		return runtime;
+	}
 	
 	
 	
@@ -240,7 +271,28 @@ public class AndriosData implements Serializable, Cloneable {
 	 * Setter Methods
 	 */
 	
+	public void setGender(boolean isMale){
+		this.isMale = isMale;
+		setChanged();
+		notifyObservers();
+		System.out.println("MODEL UPDATE GENDER");
+	}
+	
+	public void setAge(int age){
+		this.age = age;
 
+		setChanged();
+		notifyObservers();
+		System.out.println("MODEL UPDATE AGE");
+	}
+	
+	public void setAge2(int age2){
+		this.age2 = age2;
+
+		setChanged();
+		notifyObservers();
+		System.out.println("MODEL UPDATE AGE2");
+	}
 	
 	
 

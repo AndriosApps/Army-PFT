@@ -15,11 +15,11 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class InstructionsActivity extends Activity {
 
-	TextView opnavLBL, AR6009LBL, navadmin2LBL, navadmin3LBL, npcLBL;
+	
 	AdView adView;
 	AdRequest request;
 	GoogleAnalyticsTracker tracker;
-	Button rateBTN;
+	Button rateBTN, fm21_20BTN, ar6009BTN;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +34,9 @@ public class InstructionsActivity extends Activity {
 
 	private void setConnections() {
 		rateBTN = (Button) findViewById(R.id.instructionActivityRateBTN);
-		opnavLBL = (TextView) findViewById(R.id.instructionActivityOPNAVLBL);
-		AR6009LBL = (TextView) findViewById(R.id.instructionActivityAR6009LBL);
-		navadmin2LBL = (TextView) findViewById(R.id.instructionActivityNAVADMIN2LBL);
-		navadmin3LBL = (TextView) findViewById(R.id.instructionActivityNAVADMIN3LBL);
-		npcLBL = (TextView) findViewById(R.id.instructionActivityNPCLBL);
+		fm21_20BTN = (Button) findViewById(R.id.fm21_20BTN);
+		ar6009BTN = (Button) findViewById(R.id.ar6009BTN);
+		
 		
 		adView = (AdView)this.findViewById(R.id.instructionsAdView);
 	      
@@ -61,7 +59,7 @@ public class InstructionsActivity extends Activity {
 			
 		});
 		
-		opnavLBL.setOnClickListener(new OnClickListener(){
+		fm21_20BTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
 				 tracker.trackEvent(
@@ -75,7 +73,7 @@ public class InstructionsActivity extends Activity {
 			
 		});
 		
-		AR6009LBL.setOnClickListener(new OnClickListener(){
+		ar6009BTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
 				 tracker.trackEvent(
@@ -88,45 +86,7 @@ public class InstructionsActivity extends Activity {
 			}
 			
 		});
-		navadmin2LBL.setOnClickListener(new OnClickListener(){
-
-			public void onClick(View v) {
-				 tracker.trackEvent(
-				            "Clicks",  // Category
-				            "Link",  // Action
-				            "NAVADMIN 293-06", // Label
-				            0);       // Value
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.navy-prt.com/navadmin293-06.html"));
-				//startActivity(browserIntent);
-			}
-			
-		});
-		navadmin3LBL.setOnClickListener(new OnClickListener(){
-
-			public void onClick(View v) {
-				 tracker.trackEvent(
-				            "Clicks",  // Category
-				            "Link",  // Action
-				            "NAVADMIN 011-07", // Label
-				            0);       // Value
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.navy-prt.com/navadmin011-07.html"));
-				//startActivity(browserIntent);
-			}
-			
-		});
-		npcLBL.setOnClickListener(new OnClickListener(){
-
-			public void onClick(View v) {
-				 tracker.trackEvent(
-				            "Clicks",  // Category
-				            "Link",  // Action
-				            "NPC.navy.mil", // Label
-				            0);       // Value
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.npc.navy.mil/"));
-				//startActivity(browserIntent);
-			}
-			
-		});
+		
 
 		
 	}

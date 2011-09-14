@@ -1,5 +1,9 @@
 package com.andrios.apft;
 
+
+import java.util.Observable;
+import java.util.Observer;
+
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
@@ -8,6 +12,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -22,7 +29,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class APFTActivity extends Activity{
+public class APFTActivity extends Activity implements Observer{
 	
 	private static int MAX_PUSHUPS = 80;//max pushups is 77
 	private static int MIN_PUSHUPS = 0;
@@ -31,12 +38,21 @@ public class APFTActivity extends Activity{
 	private static int MAX_RUN = 1590;// 26:30 minutes
 	private static int MIN_RUN = 600;// 10 minutes
 	
+	private static int MAX_SWIM = 1590;// 26:30 minutes
+	private static int MIN_SWIM = 600;// 10 minutes
+
+	private static int MAX_BIKE = 1800;//  30:00minutes
+	private static int MIN_BIKE = 600;//  10 minutes
+	private static int MAX_WALK = 2500;//  minutes
+	private static int MIN_WALK = 600;//  10 minutes
+	
 	
 	RadioButton maleRDO, femaleRDO;
 	Spinner ageSpinner;
 	SeekBar pushupSeekBar, situpSeekBar, runSeekBar;
 	TextView pushupLBL, situpLBL,runLBL, scoreLBL;
 	TextView pushupScoreLBL, situpScoreLBL, runScoreLBL;
+	TextView cardioLBL;
 	Button runUpBTN, runDownBTN;
 	Button pushupUpBTN, pushupDownBTN, situpUpBTN, situpDownBTN;
 	AndriosData mData;
@@ -50,7 +66,7 @@ public class APFTActivity extends Activity{
 	int pushupScore = -1;
 	int situpScore = -1;
 	int runScore = -1;
-	boolean male;
+	boolean male, alternate, alternatePass;
 	
 	 @Override
 	    public void onCreate(Bundle savedInstanceState) {
@@ -58,18 +74,53 @@ public class APFTActivity extends Activity{
 	        setContentView(R.layout.apftactivity);
 	        
 	        
-	        getExtras();
+	        
 	        setConnections();
 	        setOnClickListeners();
-
+	        getExtras();
 	        setTracker();
 	        
 	       
 	    
 	    }
+	 
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+		    MenuInflater inflater = getMenuInflater();
+		    inflater.inflate(R.menu.apftmenu, menu);
+		    return true;
+		}
+		
+		
 	private void getExtras() {
-		Intent intent = this.getIntent();
+Intent intent = this.getIntent();
+		
 		mData = (AndriosData) intent.getSerializableExtra("data");
+		mData.addObserver(this);
+		age = mData.getAge();
+		male = mData.getGender();
+		
+		if(age == 17){
+			ageSpinner.setSelection(0);
+		}else if(age == 22){
+			ageSpinner.setSelection(1);
+		}else if(age == 27){
+			ageSpinner.setSelection(2);
+		}else if(age == 32){
+			ageSpinner.setSelection(3);
+		}else if(age == 37){
+			ageSpinner.setSelection(4);
+		}else if(age == 42){
+			ageSpinner.setSelection(5);
+		}else if(age == 47){
+			ageSpinner.setSelection(6);
+		}else if(age == 52){
+			ageSpinner.setSelection(7);
+		}
+		
+		if(!male){
+			femaleRDO.setChecked(true);
+		}
 			
 	}
 
@@ -89,7 +140,10 @@ public class APFTActivity extends Activity{
 				R.layout.my_spinner_item, array_spinner);
 		ageSpinner.setAdapter(adapter);
 		
+		cardioLBL = (TextView) findViewById(R.id.apftActivityCardioLBL);
 		maleRDO  = (RadioButton) findViewById(R.id.APFTActivityMaleRDO); 
+
+		femaleRDO  = (RadioButton) findViewById(R.id.APFTActivityFemaleRDO); 
 		pushupSeekBar = (SeekBar) findViewById(R.id.APFTActivityPushupSeekBar); 
 		situpSeekBar = (SeekBar) findViewById(R.id.APFTActivitySitUpSeekBar);
 		runSeekBar = (SeekBar) findViewById(R.id.APFTActivityRunTimeSeekBar);
@@ -134,7 +188,7 @@ public class APFTActivity extends Activity{
 
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 				calculateScore();
-				
+				mData.setGender(maleRDO.isChecked());
 			}
 			
 		});
@@ -161,6 +215,7 @@ public class APFTActivity extends Activity{
 				age = 52;
 			}
 			calculateScore();
+			mData.setAge(age);
 			
 		}
 
@@ -304,10 +359,25 @@ public class APFTActivity extends Activity{
 	 runUpBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
-				if(runtime < MAX_RUN){
+			
+				int t1 = MAX_RUN;
+				int t2 = MIN_RUN;
+				if(cardioLBL.getText().toString().equals("Bike Time")){
+					t1 = MAX_BIKE;
+					t2 = MIN_BIKE;
+				}else if(cardioLBL.getText().toString().equals("Walk Time")){
+					t1 = MAX_WALK;
+					t2 = MIN_WALK;
+				}else if(cardioLBL.getText().toString().equals("Swim Time")){
+					t1 = MAX_SWIM;
+					t2 = MIN_SWIM;
+				}
+				
+				
+				if(runtime < t1){
 					runtime += 1;
 				}
-				runSeekBar.setProgress(runtime - MIN_RUN);
+				runSeekBar.setProgress(runtime - t2);
 				
 			}
 			 
@@ -316,10 +386,23 @@ public class APFTActivity extends Activity{
 		 runDownBTN.setOnClickListener(new OnClickListener(){
 
 				public void onClick(View v) {
-					if(runtime > MIN_RUN){
+					int t1 = MAX_RUN;
+					int t2 = MIN_RUN;
+					if(cardioLBL.getText().toString().equals("Bike Time")){
+						t1 = MAX_BIKE;
+						t2 = MIN_BIKE;
+					}else if(cardioLBL.getText().toString().equals("Walk Time")){
+						t1 = MAX_WALK;
+						t2 = MIN_WALK;
+					}else if(cardioLBL.getText().toString().equals("Swim Time")){
+						t1 = MAX_SWIM;
+						t2 = MIN_SWIM;
+					}
+					
+					if(runtime > t2){
 						runtime -= 1;
 					}
-					runSeekBar.setProgress(runtime - MIN_RUN);
+					runSeekBar.setProgress(runtime - t2);
 					
 				}
 				 
@@ -355,13 +438,17 @@ public class APFTActivity extends Activity{
 		if(situpchanged){
 			scoreSitups();
 		}
-		if(runchanged){
+		if(runchanged && !alternate){
 			scoreRun();
+			alternatePass = false;
+		}else if(runchanged && alternate){
+			runScore = 0;
+			calcAlternateScores();
 		}
 		
 		if(runchanged && situpchanged && pushupchanged){
 			int totalScore = (runScore + situpScore + pushupScore);
-			if(runScore < 60 || pushupScore < 60 || pushupScore < 60){
+			if((runScore < 60 && !alternatePass) || pushupScore < 60 || pushupScore < 60){
 				scoreLBL.setText("Event(s) Failed: " + totalScore);
 				scoreLBL.setBackgroundColor(Color.RED);
 				scoreLBL.getBackground().setAlpha(100);
@@ -371,6 +458,10 @@ public class APFTActivity extends Activity{
 				scoreLBL.getBackground().setAlpha(100);
 			}
 			
+		}else{
+			scoreLBL.setBackgroundColor(Color.GREEN);
+			scoreLBL.getBackground().setAlpha(0);
+			scoreLBL.setText("Enter Required Metrics");
 		}
 		
 	}
@@ -681,6 +772,49 @@ public class APFTActivity extends Activity{
 		
 	}
 	
+	private void calcAlternateScores(){
+		int posit = ageSpinner.getSelectedItemPosition();
+		alternatePass = false;
+		if(maleRDO.isChecked()){
+			if(cardioLBL.getText().toString().equals("Bike Time")){
+				if(runtime <= mData.bikeMale[posit]){
+					runScoreLBL.setText("GO");
+					alternatePass = true;
+				}
+			}else if(cardioLBL.getText().toString().equals("Walk Time")){
+				if(runtime <= mData.walkMale[posit]){
+					runScoreLBL.setText("GO");
+					alternatePass = true;
+				}
+			}else if(cardioLBL.getText().toString().equals("Swim Time")){
+				if(runtime <= mData.swimMale[posit]){
+					runScoreLBL.setText("GO");
+					alternatePass = true;
+				}
+			}
+		}else{
+			if(cardioLBL.getText().toString().equals("Bike Time")){
+				if(runtime <= mData.bikeFemale[posit]){
+					runScoreLBL.setText("GO");
+					alternatePass = true;
+				}
+			}else if(cardioLBL.getText().toString().equals("Walk Time")){
+				if(runtime <= mData.walkFemale[posit]){
+					runScoreLBL.setText("GO");
+					alternatePass = true;
+				}
+			}else if(cardioLBL.getText().toString().equals("Swim Time")){
+				if(runtime <= mData.swimFemale[posit]){
+					runScoreLBL.setText("GO");
+					alternatePass = true;
+				}
+			}
+		}
+		if(!alternatePass){
+			runScoreLBL.setText("Fail");
+		}
+	}
+	
 	private void setTracker() {
 		tracker = GoogleAnalyticsTracker.getInstance();
 
@@ -688,6 +822,64 @@ public class APFTActivity extends Activity{
 	    tracker.start("UA-23366060-6", this);
 	    
 		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	    case R.id.menuRunBTN:
+	    	cardioLBL.setText("Run Time");
+	    	alternate = false;
+	    	
+	    	
+	    	runSeekBar.setMax(MAX_RUN - MIN_RUN);
+	    	resetRun();
+	    	calculateScore();
+	    	
+	        return true;
+	    case R.id.menuBikeBTN:
+	    	cardioLBL.setText("Bike Time");
+	    	alternate = true;
+	    	
+		    runSeekBar.setMax(MAX_BIKE - MIN_BIKE);
+
+	    	resetRun();
+		    calculateScore();
+	    	
+	        return true;
+	    case R.id.menuWalkBTN:
+	    	cardioLBL.setText("Walk Time");
+	    	alternate = true;
+	    	int i = runtime;
+	    	runSeekBar.setMax(MAX_WALK - MIN_WALK);
+	    	
+	    	resetRun();
+	    	calculateScore();
+	    	
+	        return true;
+	        
+	    case R.id.menuSwimBTN:
+	    	cardioLBL.setText("Swim Time");
+	    	alternate = true;
+	    	
+		    
+	    	runSeekBar.setMax(MAX_SWIM - MIN_SWIM);
+
+	    	resetRun();
+	    	
+	    	calculateScore();
+	    	
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	private void resetRun(){
+		runSeekBar.setProgress(0);
+		runchanged = false;
+		runScoreLBL.setText("");
 	}
 	
 	public void onResume(){
@@ -698,5 +890,35 @@ public class APFTActivity extends Activity{
 	public void onPause(){
 		super.onPause();
 		tracker.dispatch();
+	}
+
+	public void update(Observable arg0, Object arg1) {
+		System.out.println("APFT UPDATE");
+		age = mData.getAge();
+		male = mData.getGender();
+		
+		if(age == 17){
+			ageSpinner.setSelection(0);
+		}else if(age == 22){
+			ageSpinner.setSelection(1);
+		}else if(age == 27){
+			ageSpinner.setSelection(2);
+		}else if(age == 32){
+			ageSpinner.setSelection(3);
+		}else if(age == 37){
+			ageSpinner.setSelection(4);
+		}else if(age == 42){
+			ageSpinner.setSelection(5);
+		}else if(age == 47){
+			ageSpinner.setSelection(6);
+		}else if(age == 52){
+			ageSpinner.setSelection(7);
+		}
+		
+		
+		femaleRDO.setChecked(!male);
+		maleRDO.setChecked(male);
+		
+		
 	}
 }
