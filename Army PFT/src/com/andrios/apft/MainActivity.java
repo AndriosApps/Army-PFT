@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.view.Window;
 import android.widget.TabHost;
 
 public class MainActivity extends TabActivity {
@@ -19,6 +20,8 @@ public class MainActivity extends TabActivity {
    
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.mainactivity);
         
         readData();

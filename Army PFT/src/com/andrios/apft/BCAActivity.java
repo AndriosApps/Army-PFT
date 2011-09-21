@@ -188,6 +188,7 @@ public class BCAActivity extends Activity implements Observer {
 					public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 							long arg3) {
 						int posit = ageSpinner.getSelectedItemPosition();
+						System.out.println("POSIT " + posit);
 						if(posit == 0){
 							age = 17;
 						}else if(posit == 1){
@@ -208,7 +209,7 @@ public class BCAActivity extends Activity implements Observer {
 						}
 						
 
-						mData.setAge(age);
+						mData.setAge2(age);
 						
 					}
 
@@ -702,6 +703,7 @@ public class BCAActivity extends Activity implements Observer {
 		}
 
 		public void update(Observable observable, Object data) {
+			System.out.println("BCA UPDATE");
 			age = mData.getAge2();
 			boolean male = mData.getGender();
 			

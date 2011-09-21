@@ -453,7 +453,7 @@ Intent intent = this.getIntent();
 				scoreLBL.setBackgroundColor(Color.RED);
 				scoreLBL.getBackground().setAlpha(100);
 			}else{
-				scoreLBL.setText("Total Points: " + totalScore);
+				scoreLBL.setText(Integer.toString(totalScore));
 				scoreLBL.setBackgroundColor(Color.GREEN);
 				scoreLBL.getBackground().setAlpha(100);
 			}
@@ -461,7 +461,7 @@ Intent intent = this.getIntent();
 		}else{
 			scoreLBL.setBackgroundColor(Color.GREEN);
 			scoreLBL.getBackground().setAlpha(0);
-			scoreLBL.setText("Enter Required Metrics");
+			scoreLBL.setText("");
 		}
 		
 	}
