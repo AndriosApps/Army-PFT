@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -17,8 +18,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -43,6 +43,8 @@ public class BCAActivity extends Activity implements Observer {
 	Button maleNeckPlusBTN, maleNeckMinusBTN, femaleNeckPlusBTN, femaleNeckMinusBTN;
 	Button maleWaistPlusBTN, maleWaistMinusBTN, femaleWaistPlusBTN, femaleWaistMinusBTN;
 	Button femaleHipsPlusBTN, femaleHipsMinusBTN;
+	Button logBTN;
+	RelativeLayout bottomBar;
 	Double neck = 10.0, waist= 30.0, difference = 20.0, percentFat = 0.0;
 	Double fneck = 15.0, fwaist= 30.0, fhips = 35.0, fdifference = 50.0, fpercentFat = 0.0;
 	
@@ -53,7 +55,8 @@ public class BCAActivity extends Activity implements Observer {
 	TextView differenceLBL, percentFatLBL, femaleDifferenceLBL, femalePercentFatLBL;
 	TextView weightLBL, heightInchLBL, heightFeetLBL, heightWeightLBL;
 	TextView HWLBL, bodyFatLBL;
-	boolean HWchanged, maleBFchanged, femaleBFchanged;
+	boolean HWchanged, maleBFchanged, femaleBFchanged, isLog, isPremium;
+	boolean inStandards, passBF;
 	Spinner ageSpinner;
 	private String array_spinner[];
 	int age = 17;
@@ -64,33 +67,40 @@ public class BCAActivity extends Activity implements Observer {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.bcaactivity);
 	        
-	        
+	        getExtras();
 	        setConnections();
 	        setOnClickListeners();
-	        getExtras();
+	        finishSetup();
 	        setTracker();
 	    }
 	
-		private void getExtras() {
-			Intent intent = this.getIntent();
-			mData = (AndriosData) intent.getSerializableExtra("data");
-			mData.addObserver(this);
-			age = mData.getAge2();
+		private void finishSetup() {
 			boolean male = mData.getGender();
 			
-			if(age == 17){
+			if(age <= 20){
 				ageSpinner.setSelection(0);
-			}else if(age == 21){
+			}else if(age <= 27){
 				ageSpinner.setSelection(1);
-			}else if(age == 28){
+			}else if(age >= 39){
 				ageSpinner.setSelection(2);
-			}else if(age == 40){
+			}else if(age >= 40){
 				ageSpinner.setSelection(3);
 			}
 			
 			
 			femaleRDO.setChecked(!male);
 			maleRDO.setChecked(male);
+		
+	}
+
+		private void getExtras() {
+			Intent intent = this.getIntent();
+			mData = (AndriosData) intent.getSerializableExtra("data");
+			mData.addObserver(this);
+			age = mData.getAge();
+			isLog = intent.getBooleanExtra("log", false);
+			isPremium = intent.getBooleanExtra("premium", false);
+			
 			
 		}
 
@@ -177,7 +187,15 @@ public class BCAActivity extends Activity implements Observer {
 			HWLL = (LinearLayout) findViewById(R.id.bcaActivityHeightWeightLL);
 
 			bodyFatLL = (LinearLayout) findViewById(R.id.bcaActivityBodyFatLL);
-			
+			logBTN = (Button) findViewById(R.id.bcaActivityLogBTN);
+			bottomBar = (RelativeLayout) findViewById(R.id.bcaActivityBottomBar);
+			if(!isLog){
+				bottomBar.setVisibility(View.GONE);	
+			}else{
+				maleRDO.setEnabled(false);
+				femaleRDO.setEnabled(false);
+				ageSpinner.setEnabled(false);
+			}
 			
 		}
 
@@ -508,6 +526,59 @@ public class BCAActivity extends Activity implements Observer {
 			
 		});
 		
+		logBTN.setOnClickListener(new OnClickListener(){
+
+			public void onClick(View v) {
+				Double myNeck = null;
+				Double myWaist = null;
+				String myHips = null;
+				Double myDiff = null;
+				String myCircum = null;
+				String myFat = null;
+				if(maleRDO.isChecked()){
+					myNeck = neck;
+					myWaist = waist;
+					myDiff = difference;
+					myCircum = differenceLBL.getText().toString().trim();
+					myHips = " ";
+					myFat = percentFatLBL.getText().toString().trim();
+				}else{
+					myNeck = fneck;
+					myWaist = fwaist;
+					myHips = Double.toString(fhips);
+					myDiff = fdifference;
+					myCircum = femaleDifferenceLBL.getText().toString().trim();
+					myFat = femalePercentFatLBL.getText().toString().trim();
+				}
+				
+				
+				BcaEntry b = new BcaEntry(
+						(formatInches() + " / " + Integer.toString(height)+"\""), 
+						Integer.toString(weight) + "lbs", 
+						Double.toString(myNeck), 
+						Double.toString(myWaist),
+						myHips,
+						myCircum,
+						myFat,
+						inStandards,
+						passBF
+				);
+				b.setAge(age);
+				
+				Intent intent = new Intent();
+				
+				
+				
+				
+				
+				intent.putExtra("entry", b);
+				BCAActivity.this.setResult(RESULT_OK, intent);
+				BCAActivity.this.finish();
+				
+			}
+			
+		});
+		
 	}
 		
 		private void calculateMale(){
@@ -517,29 +588,34 @@ public class BCAActivity extends Activity implements Observer {
 			percentFatLBL.setText(Double.toString(percentFat)+ "%");
 			
 			if(maleBFchanged){
+				passBF = false;
 				if(age == 17){
 					if(percentFat > 20.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else if(age == 21){
 					if(percentFat > 22.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else if(age == 28){
 					if(percentFat > 24.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else{
 					if(percentFat > 26.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}
 				
@@ -554,30 +630,35 @@ public class BCAActivity extends Activity implements Observer {
 			fpercentFat = 163.205 * Math.log10(fwaist + fhips - fneck) - 97.684 * Math.log10(height) - 78.387;
 			fpercentFat = (double) Math.round(fpercentFat);
 			femalePercentFatLBL.setText(Double.toString(fpercentFat)+ "%");
+			passBF = false;
 			if(femaleBFchanged){
 				if(age == 17){
 					if(percentFat > 30.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else if(age == 21){
 					if(percentFat > 32.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else if(age == 28){
 					if(percentFat > 34.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}else{
 					if(percentFat > 36.0){
 						bodyFatLL.setBackgroundResource(R.drawable.failbtn);
 					}else{
 						bodyFatLL.setBackgroundResource(R.drawable.passbtn);
+						passBF = true;
 					}
 				}
 			}else{
@@ -607,7 +688,7 @@ public class BCAActivity extends Activity implements Observer {
 		}
 		
 		private void calcHeightWeight(){
-			boolean inStandards = false;
+			inStandards = false;
 			if(weight < mData.minWeight[height-MIN_HEIGHT]){
 				inStandards = false;
 				HWLBL.setText("Under Weight");

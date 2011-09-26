@@ -22,6 +22,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
@@ -46,15 +48,17 @@ public class APFTActivity extends Activity implements Observer{
 	private static int MAX_WALK = 2500;//  minutes
 	private static int MIN_WALK = 600;//  10 minutes
 	
-	
+	RelativeLayout bottomBar;
 	RadioButton maleRDO, femaleRDO;
 	Spinner ageSpinner;
 	SeekBar pushupSeekBar, situpSeekBar, runSeekBar;
 	TextView pushupLBL, situpLBL,runLBL, scoreLBL;
 	TextView pushupScoreLBL, situpScoreLBL, runScoreLBL;
 	TextView cardioLBL;
+	String cardio = "Run";
 	Button runUpBTN, runDownBTN;
 	Button pushupUpBTN, pushupDownBTN, situpUpBTN, situpDownBTN;
+	Button logBTN;
 	AndriosData mData;
 	AdView adView;
 	AdRequest request;
@@ -66,7 +70,7 @@ public class APFTActivity extends Activity implements Observer{
 	int pushupScore = -1;
 	int situpScore = -1;
 	int runScore = -1;
-	boolean male, alternate, alternatePass;
+	boolean male, alternate, alternatePass, isLog, isPremium;
 	
 	 @Override
 	    public void onCreate(Bundle savedInstanceState) {
@@ -74,16 +78,41 @@ public class APFTActivity extends Activity implements Observer{
 	        setContentView(R.layout.apftactivity);
 	        
 	        
-	        
+	        getExtras();
 	        setConnections();
 	        setOnClickListeners();
-	        getExtras();
+	        finishSetup();
 	        setTracker();
 	        
 	       
 	    
 	    }
 	 
+		private void finishSetup() {
+			if(age == 17){
+				ageSpinner.setSelection(0);
+			}else if(age == 22){
+				ageSpinner.setSelection(1);
+			}else if(age == 27){
+				ageSpinner.setSelection(2);
+			}else if(age == 32){
+				ageSpinner.setSelection(3);
+			}else if(age == 37){
+				ageSpinner.setSelection(4);
+			}else if(age == 42){
+				ageSpinner.setSelection(5);
+			}else if(age == 47){
+				ageSpinner.setSelection(6);
+			}else if(age == 52){
+				ageSpinner.setSelection(7);
+			}
+			
+			if(!male){
+				femaleRDO.setChecked(true);
+			}
+		
+	}
+
 		@Override
 		public boolean onCreateOptionsMenu(Menu menu) {
 		    MenuInflater inflater = getMenuInflater();
@@ -93,34 +122,16 @@ public class APFTActivity extends Activity implements Observer{
 		
 		
 	private void getExtras() {
-Intent intent = this.getIntent();
+		Intent intent = this.getIntent();
+		isLog = intent.getBooleanExtra("log", false);
+		isPremium = intent.getBooleanExtra("premium", false);	
 		
 		mData = (AndriosData) intent.getSerializableExtra("data");
 		mData.addObserver(this);
 		age = mData.getAge();
 		male = mData.getGender();
 		
-		if(age == 17){
-			ageSpinner.setSelection(0);
-		}else if(age == 22){
-			ageSpinner.setSelection(1);
-		}else if(age == 27){
-			ageSpinner.setSelection(2);
-		}else if(age == 32){
-			ageSpinner.setSelection(3);
-		}else if(age == 37){
-			ageSpinner.setSelection(4);
-		}else if(age == 42){
-			ageSpinner.setSelection(5);
-		}else if(age == 47){
-			ageSpinner.setSelection(6);
-		}else if(age == 52){
-			ageSpinner.setSelection(7);
-		}
 		
-		if(!male){
-			femaleRDO.setChecked(true);
-		}
 			
 	}
 
@@ -174,11 +185,27 @@ Intent intent = this.getIntent();
 		runSeekBar.setMax(MAX_RUN - MIN_RUN);
 		runLBL.setText(formatTimer());
 		
+		logBTN = (Button) findViewById(R.id.apftActivityLogBTN);
+		
 		 adView = (AdView)this.findViewById(R.id.APFTActivityAdView);
 	      
-		    request = new AdRequest();
-			request.setTesting(false);
-			adView.loadAd(request);
+		   
+			
+			if(!isPremium){
+				 request = new AdRequest();
+					request.setTesting(false);
+					adView.loadAd(request);
+			}else{
+				adView.setVisibility(View.INVISIBLE);
+				if(!isLog){
+					
+					bottomBar = (RelativeLayout) findViewById(R.id.prtActivityBottomBar);
+					bottomBar.setVisibility(View.GONE);
+					
+				}else{
+					logBTN.setVisibility(View.VISIBLE);
+				}
+			}
 		
 	}
 
@@ -407,6 +434,39 @@ Intent intent = this.getIntent();
 				}
 				 
 			 });
+		 
+			logBTN.setOnClickListener(new OnClickListener(){
+
+				public void onClick(View v) {
+					if(runchanged && situpchanged && pushupchanged){
+						ApftEntry p = new ApftEntry(
+								Integer.toString(pushups), 
+								Integer.toString(situps), 
+								formatTimer(), 
+								pushupScoreLBL.getText().toString(), 
+								situpScoreLBL.getText().toString(), 
+								runScoreLBL.getText().toString(), 
+								scoreLBL.getText().toString()
+						);
+						p.setAge(age);
+						p.setAlternateCardio(cardio);
+						Intent intent = new Intent();
+						
+						
+						
+						
+						
+						intent.putExtra("entry", p);
+						APFTActivity.this.setResult(RESULT_OK, intent);
+						APFTActivity.this.finish();
+					}else{
+						Toast.makeText(APFTActivity.this, "Enter Required Metrics", Toast.LENGTH_SHORT).show();
+					}
+					
+					
+				}
+				
+			});
 		
 	}
 	
@@ -448,7 +508,7 @@ Intent intent = this.getIntent();
 		
 		if(runchanged && situpchanged && pushupchanged){
 			int totalScore = (runScore + situpScore + pushupScore);
-			if((runScore < 60 && !alternatePass) || pushupScore < 60 || pushupScore < 60){
+			if((runScore < 60 && !alternatePass) || situpScore < 60 || pushupScore < 60){
 				scoreLBL.setText("Event(s) Failed: " + totalScore);
 				scoreLBL.setBackgroundColor(Color.RED);
 				scoreLBL.getBackground().setAlpha(100);
@@ -831,7 +891,7 @@ Intent intent = this.getIntent();
 	    case R.id.menuRunBTN:
 	    	cardioLBL.setText("Run Time");
 	    	alternate = false;
-	    	
+	    	cardio = "Run";
 	    	
 	    	runSeekBar.setMax(MAX_RUN - MIN_RUN);
 	    	resetRun();
@@ -841,7 +901,7 @@ Intent intent = this.getIntent();
 	    case R.id.menuBikeBTN:
 	    	cardioLBL.setText("Bike Time");
 	    	alternate = true;
-	    	
+	    	cardio = "Bike";
 		    runSeekBar.setMax(MAX_BIKE - MIN_BIKE);
 
 	    	resetRun();
@@ -853,7 +913,7 @@ Intent intent = this.getIntent();
 	    	alternate = true;
 	    	int i = runtime;
 	    	runSeekBar.setMax(MAX_WALK - MIN_WALK);
-	    	
+	    	cardio = "Walk";
 	    	resetRun();
 	    	calculateScore();
 	    	
@@ -867,7 +927,7 @@ Intent intent = this.getIntent();
 	    	runSeekBar.setMax(MAX_SWIM - MIN_SWIM);
 
 	    	resetRun();
-	    	
+	    	cardio = "Swim";
 	    	calculateScore();
 	    	
 	        return true;
