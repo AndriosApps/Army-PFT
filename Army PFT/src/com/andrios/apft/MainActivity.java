@@ -52,7 +52,7 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
         //setTracker();
         restoreTransactions();
         readData();
-        
+        mData = new AndriosData();
     	updateOwnedItems();
     	testProfile();
     }
@@ -263,19 +263,7 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 	}
 	
 	private void readData() {
-		try {
-			FileInputStream fis = openFileInput("data");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			mData = (AndriosData) ois.readObject();
-			ois.close();
-			fis.close();
-			
-		} catch (Exception e) {
-			mData = new AndriosData();
-			
-			
-		}
+		
 		
 		try {
 			FileInputStream fis = openFileInput("profile");

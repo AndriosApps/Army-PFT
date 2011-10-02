@@ -49,19 +49,8 @@ public class ApftEntry extends LogEntry{
 	 */
 	@Override
 	public String getScoreString() {
-		if(this.score == 0){
-			return "Failure";
-		}else if(this.score == 1){
-			return "Satisfactory";
-		}else if(this.score == 2){
-			return "Good";
-		}else if(this.score == 3){
-			return "Excellent";
-		}else if(this.score == 4){
-			return "Outstanding";
-		}else{
-			return "Maximum";
-		}
+		
+		return getTotalScore();
 	}
 	
 	/*

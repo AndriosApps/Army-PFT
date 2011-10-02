@@ -44,6 +44,7 @@ public class LogAdapter extends ArrayAdapter<LogEntry>{
       
             if (b != null) {
                     TextView titleTXT = (TextView) v.findViewById(R.id.journal_entry_list_item_titleLBL);
+                    TextView scoreTXT = (TextView) v.findViewById(R.id.journal_entry_list_item_scoreLBL);
                    //LinearLayout background = (LinearLayout) v.findViewById(R.id.baby_name_list_item_backgroundLL);
                     LinearLayout dateLL = (LinearLayout) v.findViewById(R.id.journal_entry_list_item_dateLL);
                     TextView dateLBL = (TextView) v.findViewById(R.id.journal_entry_list_item_dateLBL);
@@ -53,6 +54,9 @@ public class LogAdapter extends ArrayAdapter<LogEntry>{
                     if (titleTXT != null) {
                           titleTXT.setText(b.getName());                            
                     }
+                    if (scoreTXT != null) {
+                        scoreTXT.setText(b.getScoreString());                            
+                  }
                    
                     
                     
@@ -95,6 +99,8 @@ public class LogAdapter extends ArrayAdapter<LogEntry>{
                     }else{
                     	importantIMG.setImageResource(R.drawable.nothing);
                     }
+                    
+                    
                     
             }
             return v;
