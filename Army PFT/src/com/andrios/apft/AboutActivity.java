@@ -99,25 +99,17 @@ public class AboutActivity extends Activity {
 		facebookBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
-				//Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.facebook.com/pages/AndriOS/224807700868604"));
-				//startActivity(browserIntent);
-/*
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setClassName("com.facebook.katana", "com.facebook.katana.ProfileTabHostActivity");
-				intent.putExtra("extra_user_id", "224807700868604");
-				startActivity(intent);
+				
 
-				Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-				sharingIntent.setClassName("com.facebook.katana", "com.facebook.katana.ProfileTabHostActivity");
-				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://market.android.com/details?id=com.andrios.apft&feature=search_result");
+				try{
+					String uri = "fb://page/224807700868604";
+					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+					startActivity(intent);
+				}catch(Exception e){
+					Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.facebook.com/pages/AndriOS/224807700868604"));
+					startActivity(browserIntent);
+				}
 				
-				startActivity(Intent.createChooser(sharingIntent, "Share with"));
-*/
-				
-				String uri = "fb://page/224807700868604";
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-				startActivity(intent);
 				
 			}
 			
