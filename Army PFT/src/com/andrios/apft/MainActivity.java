@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+
 
 import net.robotmedia.billing.BillingController;
 import net.robotmedia.billing.BillingRequest.ResponseCode;
@@ -39,6 +41,7 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 	boolean premium;
 	AndriosData mData;
 	Profile profile;
+	GoogleAnalyticsTracker tracker;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,7 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
         
         setConnections();
         setOnClickListeners();
-        //setTracker();
+        setTracker();
         restoreTransactions();
         readData();
         mData = new AndriosData();
@@ -59,6 +62,24 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 
 
 
+	private void setTracker() {
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.start(this.getString(R.string.ga_api_key),
+				getApplicationContext());
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		tracker.trackPageView("/" + this.getLocalClassName());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		tracker.dispatch();
+	}
+	
 	private void testProfile() {
 		if(profile.getName().equals("Click to Set Name")){
 			createProfileDialog();

@@ -2,6 +2,8 @@ package com.andrios.apft;
 
 import java.util.List;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +20,7 @@ public class AboutActivity extends Activity {
 	
 	
 	Button facebookBTN, twitterBTN, emailBTN, marketBTN;
-	
+	GoogleAnalyticsTracker tracker;
 	
     /** Called when the activity is first created. */
     @Override
@@ -29,8 +31,26 @@ public class AboutActivity extends Activity {
         
         setConnections();
         setOnClickListeners();
-    
+        setTracker();
     }
+    
+	private void setTracker() {
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.start(this.getString(R.string.ga_api_key),
+				getApplicationContext());
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		tracker.trackPageView("/" + this.getLocalClassName());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		tracker.dispatch();
+	}
 
 
 	private void setConnections() {
@@ -38,7 +58,7 @@ public class AboutActivity extends Activity {
 		twitterBTN = (Button) findViewById(R.id.aboutActivityTwitterBTN);
 		emailBTN = (Button) findViewById(R.id.aboutActivityEmailBTN);
 		marketBTN = (Button) findViewById(R.id.aboutActivityMarketBTN);
-		facebookBTN.setVisibility(View.INVISIBLE);
+		//facebookBTN.setVisibility(View.INVISIBLE);
 	}
 
 
@@ -86,13 +106,18 @@ public class AboutActivity extends Activity {
 				intent.setClassName("com.facebook.katana", "com.facebook.katana.ProfileTabHostActivity");
 				intent.putExtra("extra_user_id", "224807700868604");
 				startActivity(intent);
-*/
-				Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "AndriOS Apps");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Navy PRT");
-				startActivity(Intent.createChooser(sharingIntent, "Share using"));
 
+				Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+				sharingIntent.setClassName("com.facebook.katana", "com.facebook.katana.ProfileTabHostActivity");
+				sharingIntent.setType("text/plain");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://market.android.com/details?id=com.andrios.apft&feature=search_result");
+				
+				startActivity(Intent.createChooser(sharingIntent, "Share with"));
+*/
+				
+				String uri = "fb://page/224807700868604";
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+				startActivity(intent);
 				
 			}
 			
@@ -133,10 +158,15 @@ public class AboutActivity extends Activity {
 				}
 
 */
+				try{
+					Intent intent = findTwitterClient();
+					intent.putExtra(Intent.EXTRA_TEXT, message);
+					startActivity(Intent.createChooser(intent, null)); 
+				}catch(Exception e){
+					Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://twitter.com/#!/AndriOS_Apps"));
+					startActivity(browserIntent);
+				}
 				
-				Intent intent = findTwitterClient();
-				intent.putExtra(Intent.EXTRA_TEXT, message);
-				startActivity(Intent.createChooser(intent, null)); 
 	            //context.startActivity(intent);
 			}
 			

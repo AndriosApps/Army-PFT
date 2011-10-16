@@ -73,6 +73,24 @@ public class BCAActivity extends Activity implements Observer {
 	        finishSetup();
 	        setTracker();
 	    }
+	  
+		private void setTracker() {
+			tracker = GoogleAnalyticsTracker.getInstance();
+			tracker.start(this.getString(R.string.ga_api_key),
+					getApplicationContext());
+		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+			tracker.trackPageView("/" + this.getLocalClassName());
+		}
+
+		@Override
+		public void onPause() {
+			super.onPause();
+			tracker.dispatch();
+		}
 	
 		private void finishSetup() {
 			boolean male = mData.getGender();
@@ -764,24 +782,7 @@ public class BCAActivity extends Activity implements Observer {
 			
 		}
 		
-		private void setTracker() {
-			tracker = GoogleAnalyticsTracker.getInstance();
-
-		    // Start the tracker in manual dispatch mode...
-		    tracker.start("UA-23366060-6", this);
-		    
-			
-		}
-		
-		public void onResume(){
-			super.onResume();
-			tracker.trackPageView("BCA");
-		}
-		
-		public void onPause(){
-			super.onPause();
-			tracker.dispatch();
-		}
+	
 
 		public void update(Observable observable, Object data) {
 			System.out.println("BCA UPDATE");

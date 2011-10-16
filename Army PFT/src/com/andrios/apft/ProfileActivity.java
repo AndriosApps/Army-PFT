@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -44,6 +46,7 @@ public class ProfileActivity extends Activity {
 	int whichDate = 0;
 	ImageView profileIMG;
 	boolean changes= false;
+	GoogleAnalyticsTracker tracker;
 	
 	SegmentedControlButton maleRDO, femaleRDO;
 	
@@ -57,12 +60,31 @@ public class ProfileActivity extends Activity {
         setContentView(R.layout.profileactivity);
         
         getExtras();
-        
+        setTracker();
         setConnections();
         setOnClickListeners();
         
         
     }
+    
+	private void setTracker() {
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.start(this.getString(R.string.ga_api_key),
+				getApplicationContext());
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		tracker.trackPageView("/" + this.getLocalClassName());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		write(ProfileActivity.this);
+		tracker.dispatch();
+	}
     
     
 	private void setConnections() {
@@ -323,10 +345,7 @@ public class ProfileActivity extends Activity {
 		
 	}
 	
-	public void onPause(){
-		super.onPause();
-		write(ProfileActivity.this);
-	}
+
 	
 	  @Override
 	    protected Dialog onCreateDialog(int id) {

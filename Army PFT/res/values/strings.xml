@@ -2,4 +2,6 @@
 <resources>
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">Army PFT</string>
+    
+    <string name="ga_api_key">UA-23366060-6</string>
 </resources>

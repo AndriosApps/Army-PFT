@@ -88,6 +88,24 @@ public class APFTActivity extends Activity implements Observer{
 	    
 	    }
 	 
+		private void setTracker() {
+			tracker = GoogleAnalyticsTracker.getInstance();
+			tracker.start(this.getString(R.string.ga_api_key),
+					getApplicationContext());
+		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+			tracker.trackPageView("/" + this.getLocalClassName());
+		}
+
+		@Override
+		public void onPause() {
+			super.onPause();
+			tracker.dispatch();
+		}
+	 
 		private void finishSetup() {
 			if(age == 17){
 				ageSpinner.setSelection(0);
@@ -874,15 +892,7 @@ public class APFTActivity extends Activity implements Observer{
 			runScoreLBL.setText("Fail");
 		}
 	}
-	
-	private void setTracker() {
-		tracker = GoogleAnalyticsTracker.getInstance();
 
-	    // Start the tracker in manual dispatch mode...
-	    tracker.start("UA-23366060-6", this);
-	    
-		
-	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -942,15 +952,7 @@ public class APFTActivity extends Activity implements Observer{
 		runScoreLBL.setText("");
 	}
 	
-	public void onResume(){
-		super.onResume();
-		tracker.trackPageView("PFT");
-	}
-	
-	public void onPause(){
-		super.onPause();
-		tracker.dispatch();
-	}
+
 
 	public void update(Observable arg0, Object arg1) {
 		System.out.println("APFT UPDATE");
