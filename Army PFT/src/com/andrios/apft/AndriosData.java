@@ -275,7 +275,6 @@ public class AndriosData extends Observable implements Serializable, Cloneable {
 		this.isMale = isMale;
 		setChanged();
 		notifyObservers();
-		System.out.println("MODEL UPDATE GENDER");
 	}
 	
 	public void setAge(int age){
@@ -283,7 +282,6 @@ public class AndriosData extends Observable implements Serializable, Cloneable {
 
 		setChanged();
 		notifyObservers();
-		System.out.println("MODEL UPDATE AGE");
 	}
 	
 	public void setAge2(int age2){
@@ -291,7 +289,6 @@ public class AndriosData extends Observable implements Serializable, Cloneable {
 
 		setChanged();
 		notifyObservers();
-		System.out.println("MODEL UPDATE AGE2");
 	}
 	
 	

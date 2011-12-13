@@ -955,7 +955,6 @@ public class APFTActivity extends Activity implements Observer{
 
 
 	public void update(Observable arg0, Object arg1) {
-		System.out.println("APFT UPDATE");
 		age = mData.getAge();
 		male = mData.getGender();
 		

@@ -4,4 +4,8 @@
     <string name="app_name">Army PFT</string>
     
     <string name="ga_api_key">UA-23366060-6</string>
+    <string name="lilly_1_1">One sunny day in San Diego Lilly the dog awoke, sad and alone.  Lilly needed a friend.  Little did Lilly know, today would be the day she would not only meet a friend, but find a family.
+</string>
+    <string name="title_instructions">Instructions</string>
+    <string name="empty"></string>
 </resources>

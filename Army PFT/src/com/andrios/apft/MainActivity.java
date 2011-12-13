@@ -1,9 +1,13 @@
 package com.andrios.apft;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -18,8 +22,10 @@ import net.robotmedia.billing.model.Transaction;
 import net.robotmedia.billing.model.Transaction.PurchaseState;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +55,7 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
         setContentView(R.layout.mainactivity);
         
 
-        
+        AppRater.app_launched(this);
         setConnections();
         setOnClickListeners();
         setTracker();
@@ -136,11 +142,10 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 
 			public void onClick(View v) {
 				
-				if(premium){
+				if(premium || trial()){
 					Intent intent = new Intent(v.getContext(), LogActivity.class);
 					mData.setAge(profile.getAge());
 					mData.setGender(profile.isMale());
-					System.out.println("Main Age" + mData.getAge());
 					intent.putExtra("data", mData);
 					startActivity(intent);
 				}else{
@@ -159,7 +164,6 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 				mData.setAge(profile.getAge());
 				mData.setGender(profile.isMale());
 
-				System.out.println("Main Age" + mData.getAge());
 				intent.putExtra("data", mData);
 				startActivity(intent);
 				
@@ -302,6 +306,42 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 	}
 	}
 
+	private boolean trial(){
+		try {
+			FileInputStream fis = openFileInput("calendar");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			Calendar endTrial = (Calendar) ois.readObject();
+			ois.close();
+			fis.close();
+			if(Calendar.getInstance().after(endTrial)){
+				return false;
+			}else{
+				Toast.makeText(MainActivity.this, "Premium Features Trial",
+						Toast.LENGTH_SHORT).show();
+				return true;
+			}
+		} catch (Exception e) {
+			try {
+				FileOutputStream fos;
+				fos = MainActivity.this.openFileOutput("calendar", Context.MODE_PRIVATE);
+				ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+				Calendar c = Calendar.getInstance();
+				c.add(Calendar.DAY_OF_YEAR, 5);
+				oos.writeObject(c);
+
+				oos.close();
+				fos.close();
+				return true;
+			} catch (IOException ee) {
+				ee.printStackTrace();
+				
+			}
+			
+		
+	}
+		return false;
+	}
 
 
 	public void update(Observable observable, Object data) {

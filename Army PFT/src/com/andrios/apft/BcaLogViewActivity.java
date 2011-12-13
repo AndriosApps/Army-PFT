@@ -1,5 +1,8 @@
 package com.andrios.apft;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -11,22 +14,23 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.opengl.Visibility;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
-import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 public class BcaLogViewActivity extends Activity {
 	
@@ -61,6 +65,15 @@ public class BcaLogViewActivity extends Activity {
         setTracker();
         
     }
+    
+	/*@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.share_menu, menu);
+	    return true;
+	}*/
+	
+	
 	private void setTracker() {
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.start(this.getString(R.string.ga_api_key),
@@ -291,4 +304,55 @@ public class BcaLogViewActivity extends Activity {
 
 		    return super.onKeyDown(keyCode, event);
 		}
+		
+		public void shareLog(){
+			LinearLayout rootView = (LinearLayout) findViewById(R.id.RootView);
+			saveBTN.setVisibility(View.GONE);
+			rootView.setDrawingCacheEnabled(true);
+			Bitmap bitmap = Bitmap.createBitmap(rootView.getDrawingCache());
+			File root = android.os.Environment.getExternalStorageDirectory();               
+
+			 File dir = new File (root.getAbsolutePath() + "/download/");
+			try {
+				
+				bitmap.compress(CompressFormat.PNG, 100, new FileOutputStream(dir+"BCA.png"));
+				Toast.makeText(this, "Saved Image to " + dir,Toast.LENGTH_LONG).show();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				Toast.makeText(this, "Image Output failed",Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+			Intent picMessageIntent = new Intent(android.content.Intent.ACTION_SEND);  
+			picMessageIntent.setType("image/jpeg");  
+			
+			File downloadedPic =  new File(  
+					dir+"BCA.png");  
+			  
+			picMessageIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(downloadedPic)); 
+			picMessageIntent.putExtra(Intent.EXTRA_SUBJECT, "AndriOS Apps Army PFT app for Android");
+			picMessageIntent.putExtra(Intent.EXTRA_TEXT, "AndriOS Apps Army PFT app for Android");
+			 tracker.trackEvent(
+			            "Social",  // Category
+			            "Share",  // Action
+			            "Share BCA", // Label
+			            0);       // Value
+		    startActivity(Intent.createChooser(picMessageIntent, "Share your rack using:")); 
+
+		    saveBTN.setVisibility(View.VISIBLE);
+		}
+		
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+		    // Handle item selection
+		    switch (item.getItemId()) {
+		    case R.id.menuShareBTN:
+		    	shareLog();
+		    	
+		        return true;
+		   
+		    default:
+		        return super.onOptionsItemSelected(item);
+		    }
+		}
+
 }

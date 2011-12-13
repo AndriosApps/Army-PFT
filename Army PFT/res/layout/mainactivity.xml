@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent" android:background="@drawable/background">
-        <LinearLayout android:id="@+id/linearLayout2" android:background="#000000" android:layout_width="fill_parent" android:layout_height="50dip" android:gravity="center|left">
-            <TextView android:text="Army PFT" android:id="@+id/textView1" android:textSize="22dip" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:background="@color/action_bar"
+            android:gravity="center|left" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Army PFT"
+                android:textSize="22dip" >
+</TextView>
         </LinearLayout>
         <LinearLayout android:id="@+id/linearLayout3" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1">
             <LinearLayout android:id="@+id/linearLayout6" android:layout_weight="1" android:gravity="center" android:layout_width="75dip" android:layout_height="fill_parent" android:orientation="vertical">
