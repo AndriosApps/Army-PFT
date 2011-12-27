@@ -1,6 +1,7 @@
 package com.andrios.apft;
 
 
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -18,9 +19,11 @@ import android.widget.TextView;
 	    
 	    private final static int DAYS_UNTIL_PROMPT = 3;
 	    private final static int LAUNCHES_UNTIL_PROMPT = 5;
-	    
+	    static String market;
 	    
 	    public static void app_launched(Context mContext) {
+
+			market = mContext.getResources().getString(R.string.market);
 	        SharedPreferences prefs = mContext.getSharedPreferences("apprater", 0);
 	        
 	        if (prefs.getBoolean("dontshowagain", false)) { return ; }
@@ -66,7 +69,14 @@ import android.widget.TextView;
 	        b1.setText("Rate " + APP_TITLE);
 	        b1.setOnClickListener(new OnClickListener() {
 	            public void onClick(View v) {
-	                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
+	            
+		            if(market.equals("amazon")){
+	            		mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.amazon.com/gp/mas/dl/android?p=" + APP_PNAME)));
+		                
+	            	}else{
+	            		mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
+		                
+	            	}
 	                if (editor != null) {
 	                    editor.putBoolean("dontshowagain", true);
 	                    editor.commit();

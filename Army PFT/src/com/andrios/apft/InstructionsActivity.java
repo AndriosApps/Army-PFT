@@ -49,6 +49,7 @@ public class InstructionsActivity extends Activity {
 	AdRequest request;
 	GoogleAnalyticsTracker tracker;
 	Button rateBTN, tc3_22_20BTN, fm2021BTN, ar6009BTN;
+	String market;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +82,9 @@ public class InstructionsActivity extends Activity {
     
 
 	private void setConnections() {
+
+		market = getResources().getString(R.string.market);
+		
 		rateBTN = (Button) findViewById(R.id.instructionActivityRateBTN);
 		fm2021BTN = (Button) findViewById(R.id.fm21_20BTN);
 		tc3_22_20BTN = (Button) findViewById(R.id.tc32220_20BTN);
@@ -99,9 +103,18 @@ public class InstructionsActivity extends Activity {
 		rateBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setData(Uri.parse("market://details?id=com.andrios.apft"));
-				startActivity(intent);
+				
+				
+					if(market.equals("amazon")){
+						Intent intent = new Intent(Intent.ACTION_VIEW);
+						intent.setData(Uri.parse("http://www.amazon.com/gp/mas/dl/android?p=com.andrios.apft"));
+						startActivity(intent);
+					}else{
+						Intent intent = new Intent(Intent.ACTION_VIEW);
+						intent.setData(Uri.parse("market://details?id=com.andrios.apft"));
+						startActivity(intent);
+					}
+				
 
 				
 			}

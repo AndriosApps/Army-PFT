@@ -23,7 +23,7 @@ public class Profile extends Observable implements Serializable{
 	Calendar nextPFA;
 	ArrayList<LogEntry> logList;
 	boolean isMale;
-	boolean isPinProtected;
+	boolean isPinProtected;//premium features
 	int pin;
 	Uri profilePic;
 	Bitmap profileBitmap;

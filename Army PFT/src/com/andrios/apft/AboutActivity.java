@@ -21,6 +21,7 @@ public class AboutActivity extends Activity {
 	
 	Button facebookBTN, twitterBTN, emailBTN, marketBTN;
 	GoogleAnalyticsTracker tracker;
+	String market;
 	
     /** Called when the activity is first created. */
     @Override
@@ -58,7 +59,10 @@ public class AboutActivity extends Activity {
 		twitterBTN = (Button) findViewById(R.id.aboutActivityTwitterBTN);
 		emailBTN = (Button) findViewById(R.id.aboutActivityEmailBTN);
 		marketBTN = (Button) findViewById(R.id.aboutActivityMarketBTN);
-		//facebookBTN.setVisibility(View.INVISIBLE);
+		market = getResources().getString(R.string.market);
+		if(market.equals("amazon")){
+			
+		}
 	}
 
 
@@ -85,9 +89,16 @@ public class AboutActivity extends Activity {
 		marketBTN.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setData(Uri.parse("market://search?q=pub:AndriOS"));
-				startActivity(intent);
+				if(market.equals("amazon")){
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse("http://www.amazon.com/gp/mas/dl/android?p=com.andrios.apft&showAll=1"));
+					startActivity(intent);
+					
+				}else{
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse("market://search?q=pub:AndriOS"));
+					startActivity(intent);
+				}
 
 				
 			}
