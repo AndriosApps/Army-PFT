@@ -48,6 +48,7 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 	AndriosData mData;
 	Profile profile;
 	GoogleAnalyticsTracker tracker;
+	String market;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +60,14 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
         setConnections();
         setOnClickListeners();
         setTracker();
-        restoreTransactions();
+        if(market.equals("amazon")){
+        	premium = true;
+        }else{
+            restoreTransactions();
+        	updateOwnedItems();
+        }
         readData();
         mData = new AndriosData();
-    	updateOwnedItems();
     	testProfile();
     }
 
@@ -123,7 +128,8 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 		calcBTN = (Button) findViewById(R.id.mainActivityCalculatorsBTN);
 		aboutBTN = (Button) findViewById(R.id.mainActivityAboutBTN);
 		instructionBTN = (Button) findViewById(R.id.mainActivityInstructionsBTN);
-		
+
+		market = getResources().getString(R.string.market);
 	}
 
 
@@ -307,39 +313,39 @@ public class MainActivity extends AbstractBillingActivity implements Serializabl
 	}
 
 	private boolean trial(){
-		try {
-			FileInputStream fis = openFileInput("calendar");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			Calendar endTrial = (Calendar) ois.readObject();
-			ois.close();
-			fis.close();
-			if(Calendar.getInstance().after(endTrial)){
-				return false;
-			}else{
-				Toast.makeText(MainActivity.this, "Premium Features Trial",
-						Toast.LENGTH_SHORT).show();
-				return true;
-			}
-		} catch (Exception e) {
-			try {
-				FileOutputStream fos;
-				fos = MainActivity.this.openFileOutput("calendar", Context.MODE_PRIVATE);
-				ObjectOutputStream oos = new ObjectOutputStream(fos);
-
-				Calendar c = Calendar.getInstance();
-				c.add(Calendar.DAY_OF_YEAR, 5);
-				oos.writeObject(c);
-
-				oos.close();
-				fos.close();
-				return true;
-			} catch (IOException ee) {
-				ee.printStackTrace();
-				
-			}
-			
-		
-	}
+//		try {
+//			FileInputStream fis = openFileInput("calendar");
+//			ObjectInputStream ois = new ObjectInputStream(fis);
+//			Calendar endTrial = (Calendar) ois.readObject();
+//			ois.close();
+//			fis.close();
+//			if(Calendar.getInstance().after(endTrial)){
+//				return false;
+//			}else{
+//				Toast.makeText(MainActivity.this, "Premium Features Trial",
+//						Toast.LENGTH_SHORT).show();
+//				return true;
+//			}
+//		} catch (Exception e) {
+//			try {
+//				FileOutputStream fos;
+//				fos = MainActivity.this.openFileOutput("calendar", Context.MODE_PRIVATE);
+//				ObjectOutputStream oos = new ObjectOutputStream(fos);
+//
+//				Calendar c = Calendar.getInstance();
+//				c.add(Calendar.DAY_OF_YEAR, 5);
+//				oos.writeObject(c);
+//
+//				oos.close();
+//				fos.close();
+//				return true;
+//			} catch (IOException ee) {
+//				ee.printStackTrace();
+//				
+//			}
+//			
+//		
+//	}
 		return false;
 	}
 

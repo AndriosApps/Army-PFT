@@ -6,7 +6,17 @@
   android:background="#ffffff" android:orientation="vertical">
   
    <LinearLayout android:id="@+id/linearLayout1" android:background="#33cc00" android:layout_width="fill_parent" android:layout_height="50dip" android:gravity="center">
-        <TextView android:layout_weight="0" android:textColor="#000000" android:layout_height="wrap_content" android:text="AndriOS" android:textSize="22dip" android:id="@+id/textView1" android:layout_width="wrap_content"></TextView>
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="Andrios"
+            android:textColor="#000000"
+            android:textSize="22dip" >
+        </TextView>
+
         <LinearLayout android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/journalListActivityListView"></LinearLayout>
     </LinearLayout>
     <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout1" android:layout_height="wrap_content">
